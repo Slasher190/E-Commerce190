@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  title: Music_App_Api
+  version: 1.0.0
+paths:
+  /api/v1/users/new:
+    post:
+      tags:
+        - User
+      summary: Register a new user
+      description: Create a new user account with name, email, and password fields.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: User object
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /api/v1/users/login:
+    post:
+      tags:
+        - User
+      summary: Login 
+      description: login to the valid account
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: User object
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error  
+
+  /api/v1/users/logout:
+    get:
+      tags:
+        - User
+      summary: Log out a user
+      description: Logs out the currently authenticated user
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      

@@ -1,0 +1,50 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+    networks:
+      - mern-stack-networks
+    volumes:
+      - ./frontend:/app
+    container_name: react-container  
+    # environment:
+    #   - X=y  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    depends_on:
+      - database
+    networks:
+      - mern-stack-networks  
+    volumes:
+      - ./backend:/app  
+    container_name: express-container  
+  database:
+    image: mongo
+    ports:
+      - '27017:27017'
+    container_name: mongo-container  
+    networks:
+      - mern-stack-networks  
+    volumes:
+      - mongoData:/data/database #need to configure
+    env_file:
+      - ./.env #ye utha lega neeche wala environtment
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE=ecom
+networks:
+  - mern-stack-networks
+
+volumes:
+  mongoData:
