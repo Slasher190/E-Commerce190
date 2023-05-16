@@ -9,10 +9,10 @@ services:
     depends_on:
       - backend
     networks:
-      - mern-stack-networks
+      - mern-stack-network
     volumes:
       - ./frontend:/app
-    container_name: react-container  
+    container_name: react-container
     # environment:
     #   - X=y  
   backend:
@@ -24,27 +24,28 @@ services:
     depends_on:
       - database
     networks:
-      - mern-stack-networks  
+      - mern-stack-network
     volumes:
-      - ./backend:/app  
-    container_name: express-container  
+      - ./backend:/app
+    container_name: express-container
   database:
     image: mongo
     ports:
       - '27017:27017'
-    container_name: mongo-container  
+    container_name: mongo-container           
     networks:
-      - mern-stack-networks  
+      - mern-stack-network
     volumes:
       - mongoData:/data/database #need to configure
-    env_file:
-      - ./.env #ye utha lega neeche wala environtment
+    # env_file:
+    #   - ./.env #ye utha lega neeche wala environtment
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=secret
       - MONGO_INITDB_DATABASE=ecom
 networks:
-  - mern-stack-networks
+  mern-stack-network:
+
 
 volumes:
   mongoData:
