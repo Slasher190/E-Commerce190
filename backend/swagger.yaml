@@ -141,3 +141,207 @@ paths:
           description: Bad Request - Invalid or expired token.
         "500":
           description: Internal Server Error.
+
+  /api/v1/me:
+    get:
+      tags:
+        - User
+      summary: Get User Details
+      description: Retrieve details of the authenticated user.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+        "401":
+          description: Unauthorized - User not authenticated
+        "500":
+          description: Internal Server Error
+
+  /api/v1/password/update:
+    put:
+      tags:
+        - User
+      summary: Update Password
+      description: Update the password of the authenticated user.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: oldPassword
+          description: Current password of the user.
+          required: true
+          type: string
+          format: password
+        - in: formData
+          name: newPassword
+          description: New password for the user.
+          required: true
+          type: string
+          format: password
+        - in: formData
+          name: confirmPassword
+          description: Confirm password for the user.
+          required: true
+          type: string
+          format: password
+      responses:
+        "200":
+          description: Password updated successfully
+        "400":
+          description: Bad request - Invalid or mismatched passwords
+        "401":
+          description: Unauthorized - User not authenticated
+        "500":
+          description: Internal Server Error
+
+  /api/v1/me/update:
+    put:
+      tags:
+        - User
+      summary: Update Profile
+      description: Update the profile information of the authenticated user.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: name
+          description: New name for the user.
+          required: true
+          type: string
+        - in: formData
+          name: email
+          description: New email for the user.
+          required: true
+          type: string
+          format: email
+        - in: formData
+          name: avatar
+          description: New avatar image for the user.
+          required: false
+          type: file
+      responses:
+        "200":
+          description: Profile updated successfully
+        "400":
+          description: Bad request - Invalid profile data
+        "401":
+          description: Unauthorized - User not authenticated
+        "500":
+          description: Internal Server Error
+
+  /api/v1/admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Get All Users
+      description: Get a list of all users with the admin role.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          description: Page number for pagination.
+          required: false
+          type: integer
+        - in: query
+          name: limit
+          description: Maximum number of users per page.
+          required: false
+          type: integer
+      responses:
+        "200":
+          description: Users retrieved successfully
+        "401":
+          description: Unauthorized - User not authenticated or not an admin
+        "500":
+          description: Internal Server Error
+
+  /api/v1/admin/user/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Get single user details
+      description: Retrieve details of a single user by their ID
+      parameters:
+        - in: path
+          name: id
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Users retrieved successfully
+        "401":
+          description: Unauthorized - User not authenticated or not an admin
+        "500":
+          description: Internal Server Error
+
+    put:
+      tags:
+        - Admin
+      summary: Update user role
+      description: Update the role of a user by their ID
+      parameters:
+        - in: path
+          name: id
+          description: User ID
+          required: true
+          schema:
+            type: string
+        - in: formData
+          name: name
+          description: User's name
+          required: true
+          type: string
+        - in: formData
+          name: email
+          description: User's email
+          required: true
+          type: string
+        - in: formData
+          name: role
+          description: User's role
+          required: true
+          type: string
+      responses:
+        "200":
+          description: User role updated successfully
+        "401":
+          description: Unauthorized - User not authenticated or not an admin
+        "500":
+          description: Internal Server Error
+
+    delete:
+      tags:
+        - Admin
+      summary: Delete user
+      description: Delete a user by their ID
+      parameters:
+        - in: path
+          name: id
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User deleted successfully
+        "401":
+          description: Unauthorized - User not authenticated or not an admin
+        "500":
+          description: Internal Server Error
