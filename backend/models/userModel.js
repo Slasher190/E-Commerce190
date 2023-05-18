@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import validator from "validator";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     requird: [true, "Please Enter Your Email"],
     unique: true,
+    validate: [validator.isEmail, "Please Enter A Valid Email"]
   },
   password: {
     type: String,
@@ -40,3 +41,11 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpire: Date,
 });
 export const User = mongoose.model("User", userSchema);
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  this.password = await bcrypt.hash(this.password, 10);
+});
