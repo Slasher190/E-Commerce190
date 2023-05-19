@@ -8,7 +8,6 @@ import ErrorHandler from "../middleware/error.js";
 // Admin - create product
 export const createProduct = async (req, res, next) => {
   try {
-    // console.log(req);
     const { name, description, price, category } = req.body;
     const images = req.files.images;
     let imgArr = [];
@@ -42,7 +41,6 @@ export const createProduct = async (req, res, next) => {
       images: imgArr,
       user: req.user._id,
     });
-    // console.log(name, description, price, category, imgArr);
     res.status(200).json({
       success: true,
       product,
@@ -64,7 +62,6 @@ export const getAdminProducts = async (req, res, next) => {
 // Update Product - Admin
 export const updateProduct = async (req, res, next) => {
   try {
-    console.log(" --hello");
     let product = await Product.findById(req.params.id);
     if (!product) {
       return next(new ErrorHandler("Product Not Found", 404));
@@ -134,7 +131,6 @@ export const deleteProduct = async (req, res, next) => {
 
 export const getProductDetails = async (req, res, next) => {
   try {
-    console.log("hello");
     const product = await Product.findById(req.params.id);
     if (!product) {
       return next(new ErrorHandler("Product is not found"));
@@ -149,7 +145,6 @@ export const getProductDetails = async (req, res, next) => {
 export const createProductReview = async (req, res, next) => {
   try {
     const { rating, comment, productId } = req.body;
-    console.log(rating, ".. rate");
     const review = {
       user: req.user._id,
       name: req.user.name,
@@ -203,7 +198,6 @@ export const getProductReviews = async (req, res, next) => {
 };
 
 export const deleteReview = async (req, res, next) => {
-  console.log("...hello");
   try {
     const product = Product.findById(req.query.productId);
     if (!product) {
