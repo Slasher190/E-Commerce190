@@ -532,7 +532,7 @@ paths:
   /api/v1/review:
     put:
       tags:
-        - Product
+        - Product-Review
       summary: Create or update a product review
       description: Create or update a review for a specific product
       consumes:
@@ -563,7 +563,7 @@ paths:
   /api/v1/reviews:
     get:
       tags:
-        - Product
+        - Product-Review
       summary: Get product reviews
       description: Get reviews for a product by its ID
       parameters:
@@ -593,7 +593,7 @@ paths:
           description: Internal Server Error
     delete:
       tags:
-        - Product
+        - Product-Review
       summary: Delete a review
       description: Delete a review by its ID
       parameters:
