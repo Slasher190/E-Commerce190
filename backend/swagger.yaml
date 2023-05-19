@@ -345,3 +345,281 @@ paths:
           description: Unauthorized - User not authenticated or not an admin
         "500":
           description: Internal Server Error
+
+  /api/v1/admin/product/new:
+    post:
+      tags:
+        - Product
+      summary: Create a new product
+      description: Create a new product with multiple images
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: formData
+          name: name
+          type: string
+          required: true
+          description: Product name
+        - in: formData
+          name: description
+          type: string
+          required: true
+          description: Product description
+        - in: formData
+          name: price
+          type: number
+          required: true
+          description: Product price
+        - in: formData
+          name: images
+          type: array
+          items:
+            type: file
+          required: true
+          description: Product images
+        - in: formData
+          name: category
+          type: string
+          required: true
+          description: Product category
+        - in: formData
+          name: stock
+          type: number
+          required: true
+          description: Product stock number
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+
+  /api/v1/admin/products:
+    get:
+      tags:
+        - Product
+      summary: Get all products (Admin)
+      description: Retrieve all products for admin users
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  products:
+                    type: array
+                    items:
+                      type: object
+        "500":
+          description: Internal Server Error
+
+  /api/v1/admin/product/{id}:
+    put:
+      tags:
+        - Product
+      summary: Update a product (Admin)
+      description: Update details of a product by ID for admin users
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the product to update
+          schema:
+            type: string
+        - in: formData
+          name: name
+          type: string
+          required: true
+          description: Product name
+        - in: formData
+          name: description
+          type: string
+          required: true
+          description: Product description
+        - in: formData
+          name: price
+          type: number
+          required: true
+          description: Product price
+        - in: formData
+          name: images
+          type: array
+          items:
+            type: file
+          required: true
+          description: Product images
+        - in: formData
+          name: category
+          type: string
+          required: true
+          description: Product category
+        - in: formData
+          name: stock
+          type: number
+          required: true
+          description: Product stock number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  product:
+                    type: object
+        "404":
+          description: Product Not Found
+        "500":
+          description: Internal Server Error
+
+    delete:
+      tags:
+        - Product
+      summary: Delete a product
+      description: Delete a product by its ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Product ID
+      responses:
+        "200":
+          description: Product deleted successfully
+        "404":
+          description: Product not found
+        "500":
+          description: Internal Server Error
+
+  /api/v1/product/{id}:
+    get:
+      tags:
+        - Product
+      summary: Get product details
+      description: Retrieve details of a specific product by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Product not found
+        "500":
+          description: Internal Server Error
+
+  /api/v1/review:
+    put:
+      tags:
+        - Product
+      summary: Create or update a product review
+      description: Create or update a review for a specific product
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: formData
+          name: rating
+          type: number
+          required: true
+          description: Rating for the product
+        - in: formData
+          name: comment
+          type: string
+          required: true
+          description: Review comment
+        - in: formData
+          name: productId
+          type: string
+          required: true
+          description: Product ID
+      responses:
+        "200":
+          description: Review created or updated successfully
+        "500":
+          description: Internal Server Error
+  /api/v1/reviews:
+    get:
+      tags:
+        - Product
+      summary: Get product reviews
+      description: Get reviews for a product by its ID
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Product ID
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  reviews:
+                    type: array
+                    items:
+                      type: object
+        "404":
+          description: Product not found
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - Product
+      summary: Delete a review
+      description: Delete a review by its ID
+      parameters:
+        - in: query
+          name: productId
+          required: true
+          schema:
+            type: string
+          description: Product ID
+        - in: query
+          name: id
+          # required: true
+          schema:
+            type: string
+          description: Review ID
+      responses:
+        "200":
+          description: Review deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        "404":
+          description: Product not found
+        "500":
+          description: Internal Server Error

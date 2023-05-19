@@ -19,7 +19,7 @@ const productSchema = mongoose.Schema({
   },
   images: [
     {
-      publick_id: {
+      public_id: {
         type: String,
         required: true,
       },
@@ -46,7 +46,7 @@ const productSchema = mongoose.Schema({
   reviews: [
     {
       user: {
-        type: mongoose.Schema.Object,
+        type: mongoose.Schema.ObjectId,
         ref: "User",
         required: true,
       },

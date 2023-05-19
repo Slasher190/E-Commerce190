@@ -33,7 +33,7 @@ export const registerUser = async (req, res, next) => {
       width: 150,
       crop: "scale",
     });
-    console.log(myCloud, "...data");
+    // console.log(myCloud, "...data");
     // Delete the temporary file
     await fs.promises.unlink(localPath);
     let user = await User.findOne({ email });
