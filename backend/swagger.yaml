@@ -623,3 +623,115 @@ paths:
           description: Product not found
         "500":
           description: Internal Server Error
+
+  /api/v1/order/new:
+    post:
+      tags:
+        - Order
+      summary: "Create a new order"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: order
+          description: "Order details"
+          required: true
+      responses:
+        201:
+          description: "Order created successfully"
+        400:
+          description: "Bad request"
+
+  /api/v1/order/{id}:
+    get:
+      tags:
+        - Order
+      summary: "Get Single Order"
+      description: "Get details of a single order by ID"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the order"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              succes:
+                type: boolean
+              order:
+                type: object
+        404:
+          description: "Order not found"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              statusCode:
+                type: integer
+  /api/v1/orders/me:
+    get:
+      tags:
+        - Order
+      summary: "My Orders"
+      description: "Get orders for a specific user"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              orders:
+                type: array
+                items:
+                  type: object
+      401:
+        description: "Unauthorized"
+
+  /api/v1/admin/orders:
+    get:
+      tags:
+        - Order
+      summary: "Get all orders"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Success"
+        500:
+          description: "Internal Server Error"
+
+  /api/v1/admin/order/{id}:
+    put:
+      tags:
+        - Order
+      summary: "Create or update a product review"
+      description: "Create or update a review for a specific product"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of the order"
+          required: true
+          type: string
+        - in: formData
+          name: status
+          type: string
+          required: true
+          description: "Delivery status of product"
+      responses:
+        "200":
+          description: "Review created or updated successfully"
+        "500":
+          description: "Internal Server Error"

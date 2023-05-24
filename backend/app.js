@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import express from "express";
 import userRouter from "./routes/userRoute.js";
 import userProduct from "./routes/productRoute.js";
+import userOrder from "./routes/orderRoute.js";
 import { errorMiddleware } from "./middleware/error.js";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
@@ -30,6 +31,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //Using routes
 app.use("/api/v1", userRouter);
 app.use("/api/v1", userProduct);
+app.use("/api/v1", userOrder);
 
 //Using Error Middileware
 app.use(errorMiddleware);

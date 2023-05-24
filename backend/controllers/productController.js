@@ -50,6 +50,10 @@ export const createProduct = async (req, res, next) => {
   }
 };
 
+// Get All the Products
+
+
+// Admin - All Products
 export const getAdminProducts = async (req, res, next) => {
   try {
     const products = await Product.find();
@@ -242,7 +246,7 @@ export const deleteReviewOptimised = async (req, res, next) => {
         $pull: { reviews: { _id: id } },
         $inc: { numOfReviews: -1 },
       },
-      { new: true }
+      { new: true, runValidators: true, useFindAndModify: false }
     );
 
     if (!product) {
