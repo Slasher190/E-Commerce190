@@ -735,3 +735,57 @@ paths:
           description: "Review created or updated successfully"
         "500":
           description: "Internal Server Error"
+
+    delete:
+      tags:
+        - Order
+      summary: Delete a order
+      description: Delete a order by its ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Order ID
+      responses:
+        "200":
+          description: Order deleted successfully
+        "404":
+          description: Order not found
+        "500":
+          description: Internal Server Error
+
+  /api/v1/payment/process:
+    post:
+      tags:
+        - Payment
+      summary: "Make Payment"
+      description: "Payment of Total Amount"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - in: formData
+          name: amount
+          type: number
+          required: true
+          description: "Payment amount"
+      responses:
+        "200":
+          description: "Your payment successfully"
+        "500":
+          description: "Internal Server Error"
+  /api/v1/stripapikey:
+    get:
+      tags:
+        - Payment
+      summary: "Get Payment Secret Key"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Your payment secret"
+        "500":
+          description: "Internal Server Error"
