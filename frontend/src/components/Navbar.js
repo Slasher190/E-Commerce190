@@ -1,33 +1,69 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   LightModeOutlined,
   DarkModeOutlined,
   Menu as MenuIcon,
   Search,
   SettingsOutlined,
-  ArrowDropDownOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
 import { setMode } from "state";
-import profileImage from "assets/51a42283-b190-4d9d-a417-9117d15fba21.jpg";
 import {
   AppBar,
-  Button,
-  Box,
-  Typography,
   IconButton,
   InputBase,
   Toolbar,
-  Menu,
-  MenuItem,
   useTheme,
 } from "@mui/material";
 
 const Navbar = () => {
-  return (
-    <div>Navbar</div>
-  )
-}
+  const dispatch = useDispatch();
+  const theme = useTheme();
 
-export default Navbar
+  return (
+    <AppBar
+      sx={{
+        position: "static",
+        background: "none",
+        boxShadow: "none",
+      }}
+    >
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        {/* LEFT Side */}
+        <FlexBetween>
+          <IconButton onClick={() => console.log("open/close sidebar")}>
+            <MenuIcon />
+          </IconButton>
+          <FlexBetween
+            backgroundColor={theme.palette.background.alt}
+            borderRadius="9px"
+            gap="3rem"
+            p="0.1rem 1.5rem"
+          >
+            <InputBase placeholder="Search ..." />
+            <IconButton>
+              <Search />
+            </IconButton>
+          </FlexBetween>
+        </FlexBetween>
+
+        {/* Right Side */}
+        <FlexBetween gap="1.5rem">
+          <IconButton onClick={() => dispatch(setMode())}>
+            {theme.palette.mode === "dark" ? (
+              <LightModeOutlined sx={{ fontSize: "25px" }} />
+            ) : (
+              <DarkModeOutlined sx={{ fontSize: "25px" }} />
+            )}
+          </IconButton>
+          <IconButton>
+            <SettingsOutlined sx={{ fontSize: "25px" }} />
+          </IconButton>
+        </FlexBetween>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default Navbar;
