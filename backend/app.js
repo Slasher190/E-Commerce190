@@ -19,7 +19,7 @@ const swaggerDocument = YAML.load("./swagger.yaml");
 config({
   path: "./data/config.env",
 });
-//Using Middleware
+//Using Middleware  
 app.use(fileUpload());
 app.use(logRequests);
 app.use(cookieParser());
