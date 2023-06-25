@@ -16,12 +16,14 @@ footer {
 
 .leftFooter > h4 {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1vmax;
 }
 
 .leftFooter > p {
   text-align: center;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.2vmax;
 }
 
 .leftFooter > img {
