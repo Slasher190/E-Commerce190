@@ -15,7 +15,7 @@ import {
 } from "../controllers/userController.js";
 import { isAuthenticatedUser, authorizedUser } from "../middleware/auth.js";
 
-//loginUser, logout, registerUser, forgotPassword, resetPassword, getUserDetails,
+// loginUser, logout, registerUser, forgotPassword, resetPassword, getUserDetails,
 // updatePassword, updateProfile, getAllUser, getSingleUser, updateUserRole,
 // deleteUser
 

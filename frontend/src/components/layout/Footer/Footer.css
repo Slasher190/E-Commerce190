@@ -1,0 +1,105 @@
+footer {
+  margin-top: 10vmax;
+  padding: 2vmax;
+  background-color: rgb(34, 33, 33);
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.leftFooter {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.leftFooter > h4 {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.leftFooter > p {
+  text-align: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.leftFooter > img {
+  width: 10vmax;
+  margin: 1vmax;
+  cursor: pointer;
+}
+
+.midFooter {
+  width: 60%;
+  text-align: center;
+}
+
+.midFooter > h1 {
+  font-size: 4vmax;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  color: linear-gradient(45deg, #00ff00, #ff00ff);
+  background: -webkit-linear-gradient(45deg, #00ff00, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* background: linear-gradient(to right, #ff0000, #00ff00, #0000ff);
+  background-size: 200% auto;
+  animation: gradientAnimation 5s linear infinite; */
+}
+
+.midFooter > p {
+  max-width: 60%;
+  margin: 1vmax auto;
+}
+
+.rightFooter {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+}
+
+.rightFooter > h4 {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.4vmax;
+  text-decoration: underline;
+}
+
+.rightFooter > a {
+  text-decoration: none;
+  font-size: 1.3vmax;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: white;
+}
+
+@keyframes neonShine {
+  0% {
+    color: rgb(255, 0, 0);
+  }
+  20% {
+    color: rgb(255, 255, 0);
+  }
+  40% {
+    color: rgb(0, 255, 0);
+  }
+  60% {
+    color: rgb(0, 255, 255);
+  }
+  80% {
+    color: rgb(0, 0, 255);
+  }
+  100% {
+    color: rgb(255, 0, 255);
+  }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
