@@ -9,13 +9,14 @@ import {
   createProductReview,
   getProductReviews,
   deleteReviewOptimised,
+  getAllProducts,
 } from "../controllers/productController.js";
 
 const router = express.Router();
 // allProduct, createProduct, updateProduct, deleteProduct
 // productDetail, productReview, deleteReview, adminProduct
 
-router.route("/products").get(); // yet to work
+router.route("/products").get(getAllProducts); // yet to work
 
 router
   .route("/admin/product/new")

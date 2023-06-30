@@ -51,7 +51,83 @@ export const createProduct = async (req, res, next) => {
 };
 
 // Get All the Products
+// export const getAllProducts = async (req, res, next) => {
+//   try {
+//     const resultPerPage = 8;
+//     const productsCount = await Product.countDocuments();
+//     const apiFeature = new ApiFeature(Product.find(), req.query)
+//       .search()
+//       .filter();
+//     let products = await apiFeature.query;
+//     let filteredProductCount = products.length;
+//     apiFeature.pagination(resultPerPage);
+//     products = await apiFeature.query;
+//     res.status(200).json({
+//       success: true,
+//       products,
+//       productsCount,
+//       resultPerPage,
+//       filteredProductCount,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+// price[gte]=${price[0]}&price[lte]=${price[1]}
+export const getAllProducts = async (req, res, next) => {
+  try {
+    const { search, filter, page, perPage, price } = req.query;
 
+    // Prepare query conditions based on search and filter parameters
+    const conditions = {};
+    if (search) {
+      conditions.name = { $regex: search, $options: "i" };
+    }
+    if (filter) {
+      conditions.category = filter;
+    }
+    if (price) {
+      const priceRange = price.split("-");
+      conditions.price = {
+        $gte: parseInt(priceRange[0]),
+        $lte: parseInt(priceRange[1]),
+      };
+    }
+    // Count total number of products based on the conditions
+    const totalProducts = await Product.countDocuments(conditions);
+
+    // Calculate pagination parameters
+    const currentPage = parseInt(page) || 1;
+    const productsPerPage = parseInt(perPage) || 10;
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+    // Retrieve products based on conditions, pagination, and sorting
+    const products = await Product.find(conditions)
+      .skip((currentPage - 1) * productsPerPage)
+      .limit(productsPerPage)
+      .sort({ createdAt: -1 });
+
+    // Count filtered products based on conditions
+    const filteredProductCount = await Product.countDocuments(conditions);
+
+    // Prepare response data
+    const response = {
+      currentPage,
+      totalPages,
+      totalProducts,
+      productsPerPage,
+      filteredProductCount,
+      products,
+    };
+
+    // Send the response
+    res.status(200).json(response);
+  } catch (error) {
+    // Handle any errors that occur during the process
+    return next(error)
+    // res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 // Admin - All Products
 export const getAdminProducts = async (req, res, next) => {
@@ -61,7 +137,9 @@ export const getAdminProducts = async (req, res, next) => {
       success: true,
       products,
     });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 // Update Product - Admin
 export const updateProduct = async (req, res, next) => {
@@ -143,7 +221,9 @@ export const getProductDetails = async (req, res, next) => {
       success: true,
       product,
     });
-  } catch (error) {}
+  } catch (error) {
+    next(error)
+  }
 };
 
 export const createProductReview = async (req, res, next) => {

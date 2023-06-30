@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Loader from "./components/Loader";
 import ProductDetails from "./components/ProductDetails";
 import Products from "./pages/Products";
+import Search from "./components/Search";
 
 function App() {
   useEffect(() => {
@@ -28,12 +29,13 @@ function App() {
           name="Product"
           element={<ProductDetails />}
         />
+        <Route exact path="/products" name="Products" element={<Products />} />
         <Route
-          exact
-          path="/products"
+          path="/products/:params/*"
           name="Products"
           element={<Products />}
         />
+        <Route exact path="/search" name="Search" element={<Search />} />
         <Route exact path="/sad" name="Loader" element={<Loader />} />
       </Routes>
       <Footer />

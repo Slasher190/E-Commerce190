@@ -3,7 +3,6 @@
 /backend/data/config.env
 /backend/request.log
 
-
 # dependencies
 /.pnp
 .pnp.js

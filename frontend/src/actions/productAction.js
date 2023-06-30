@@ -9,26 +9,32 @@ import {
   CLEAR_ERRORS,
 } from "../constants/productConstants";
 
-export const getProduct = () => async (dispatch) => {
-  try {
-    // const query = { search, filter, page, perPage };
-    // /products?filter=electronics
-    // page = 1,2,3,
-    // search mob...
-    // perPage = 10,8 ...products
-    dispatch({ type: ALL_PRODUCT_REQUEST });
-    const { data } = await axios.get("/api/v1/products");
-    dispatch({
-      type: ALL_PRODUCT_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: ALL_PRODUCT_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
+export const getProduct =
+  (params = {}) =>
+  async (dispatch) => {
+    const {
+      search = "",
+      filter = "",
+      page = 1,
+      perPage = 5,
+      price = "0-25000",
+    } = params;
+    try {
+      dispatch({ type: ALL_PRODUCT_REQUEST });
+      const { data } = await axios.get("/api/v1/products", {
+        params: { search, filter, page, perPage, price },
+      });
+      dispatch({
+        type: ALL_PRODUCT_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_PRODUCT_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 export const getProductDetail = (id) => async (dispatch) => {
   try {
