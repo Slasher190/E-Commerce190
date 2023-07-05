@@ -9,6 +9,7 @@ import Loader from "./components/Loader";
 import ProductDetails from "./components/ProductDetails";
 import Products from "./pages/Products";
 import Search from "./components/Search";
+import LoginSignUp from "./pages/User/LoginSignUp";
 
 function App() {
   useEffect(() => {
@@ -36,6 +37,7 @@ function App() {
           element={<Products />}
         />
         <Route exact path="/search" name="Search" element={<Search />} />
+        <Route exact path="/login" name="Login" element={<LoginSignUp/>} />
         <Route exact path="/sad" name="Loader" element={<Loader />} />
       </Routes>
       <Footer />

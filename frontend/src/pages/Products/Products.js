@@ -7,36 +7,37 @@ import ProductCard from "../../components/ProductCard";
 import { useLocation } from "react-router-dom";
 import { Pagination, Slider } from "@mui/material";
 import Typography from "@material-ui/core/Typography";
+import { useAlert } from "react-alert";
+import MetaData from "../../components/MetaData";
 
-const temp = new Set();
 const Products = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const alert = useAlert();
+
   const {
     products,
     loading,
-    // error,
     productsCount,
     productsPerPage,
     filteredProductCount,
-    // totalPages,
-    // currentPage,
+    error,
   } = useSelector((state) => state.products);
-  const [currentPage_, setCurrentPage] = useState(1);
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [numberOfProducts, setNumberOfProducts] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(5);
   const [price, setPrice] = useState([0, 25000]);
-  const location = useLocation();
-  const [count, setCount] = useState(0);
-  const [category, setCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [rating, setRating] = useState(0);
 
-  products?.map((item) => {
-    temp.add(item.category);
-  });
-  const categories = Array.from(temp);
+  const categories = Array.from(
+    new Set(products?.map((item) => item.category))
+  );
+
   useEffect(() => {
     if (filteredProductCount) {
-      setCount(filteredProductCount);
+      setNumberOfProducts(filteredProductCount);
     }
     if (productsPerPage) {
       setResultPerPage(parseInt(productsPerPage));
@@ -44,41 +45,48 @@ const Products = () => {
     if (productsCount) {
       setNumberOfProducts(productsCount);
     }
-  }, [productsPerPage, productsCount, count]);
-  const handlePageChange = (e, v) => {
-    setCurrentPage(v);
+  }, [filteredProductCount, productsPerPage, productsCount]);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
-  const priceHandler = (event, newPrice) => {
+
+  const handlePriceChange = (event, newPrice) => {
     setPrice(newPrice);
   };
-  const queryParams = new URLSearchParams(location.search);
-  const paramsObject = Object.fromEntries(queryParams.entries());
-  const updatedParamsObject = {
-    ...paramsObject,
-    page: currentPage_,
-    perPage: resultPerPage,
-    price: price.join("-"),
-    filter: category,
-  };
-  // {
-  //   (search = ""), (filter = ""), (page = 1), (perPage = 5);
-  // }
+
   const handleCategoryClick = (selectedCategory) => {
-    setCategory(selectedCategory);
-    setCurrentPage(1); // Reset the current page to 1 when a category is selected
     setSelectedCategory(selectedCategory);
+    setCurrentPage(1);
   };
+
   useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    const queryParams = new URLSearchParams(location.search);
+    const paramsObject = Object.fromEntries(queryParams.entries());
+    const updatedParamsObject = {
+      ...paramsObject,
+      page: currentPage,
+      perPage: resultPerPage,
+      price: price.join("-"),
+      filter: selectedCategory,
+      rating: rating,
+    };
+
     dispatch(getProduct(updatedParamsObject));
   }, [
     dispatch,
-    currentPage_,
+    currentPage,
     resultPerPage,
-    numberOfProducts,
-    currentPage_,
     price,
-    count,
-    category,
+    selectedCategory,
+    location.search,
+    rating,
+    alert,
+    error,
   ]);
 
   return (
@@ -87,6 +95,7 @@ const Products = () => {
         <Loader />
       ) : (
         <Fragment>
+          <MetaData title="PRODUCT'S -- ECOMMERCE" />
           <h2 className="productsHeading">Products</h2>
           <div className="products">
             {products &&
@@ -98,13 +107,13 @@ const Products = () => {
             <Typography>Price</Typography>
             <Slider
               value={price}
-              onChange={priceHandler}
+              onChange={handlePriceChange}
               valueLabelDisplay="auto"
               aria-labelledby="range-slider"
               min={0}
               max={25000}
             />
-            <Typography> Categories </Typography>
+            <Typography>Categories</Typography>
             <ul className="categoryBox">
               <li
                 className={`category-link ${
@@ -126,13 +135,24 @@ const Products = () => {
                 </li>
               ))}
             </ul>
+            <fieldset>
+              <Typography component="legend">Ratings Above</Typography>
+              <Slider
+                value={rating}
+                onChange={(e, newRating) => setRating(newRating)}
+                aria-labelledby="continuous-slider"
+                min={0}
+                max={5}
+                valueLabelDisplay="auto"
+              />
+            </fieldset>
           </div>
 
-          {resultPerPage < count && (
+          {resultPerPage < numberOfProducts && (
             <div className="paginationBox">
               <Pagination
                 count={Math.ceil(numberOfProducts / resultPerPage)}
-                page={parseInt(currentPage_)}
+                page={currentPage}
                 onChange={handlePageChange}
                 color="primary"
                 sx={{

@@ -76,7 +76,7 @@ export const createProduct = async (req, res, next) => {
 // price[gte]=${price[0]}&price[lte]=${price[1]}
 export const getAllProducts = async (req, res, next) => {
   try {
-    const { search, filter, page, perPage, price } = req.query;
+    const { search, filter, page, perPage, price, rating } = req.query;
 
     // Prepare query conditions based on search and filter parameters
     const conditions = {};
@@ -92,6 +92,9 @@ export const getAllProducts = async (req, res, next) => {
         $gte: parseInt(priceRange[0]),
         $lte: parseInt(priceRange[1]),
       };
+    }
+    if (rating) {
+      conditions.rating = { $gte: parseInt(rating), $lte: 5 };
     }
     // Count total number of products based on the conditions
     const totalProducts = await Product.countDocuments(conditions);

@@ -18,11 +18,12 @@ export const getProduct =
       page = 1,
       perPage = 5,
       price = "0-25000",
+      rating = 0
     } = params;
     try {
       dispatch({ type: ALL_PRODUCT_REQUEST });
       const { data } = await axios.get("/api/v1/products", {
-        params: { search, filter, page, perPage, price },
+        params: { search, filter, page, perPage, price, rating },
       });
       dispatch({
         type: ALL_PRODUCT_SUCCESS,
