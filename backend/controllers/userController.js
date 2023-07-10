@@ -9,32 +9,27 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { generateResetPasswordToken } from "../utils/features.js";
+import base64Img from "base64-img";
 // login
 export const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
-    // console.log(req.files.avatar, " ---data");
-    if (!req.files || !req.files.avatar) {
-      return next(new ErrorHandler("Avatar image is required.", 400));
-    }
-    const avatarImage = req.files.avatar; // Access the uploaded image file
-
-    // Save the image locally
+    const { name, email, password, avatar } = req.body;
     const currentFilePath = fileURLToPath(import.meta.url);
     const currentDirectory = dirname(currentFilePath);
-    const localDirectory = path.join(currentDirectory, "../static/img");
-    const localPath = path.join(localDirectory, avatarImage.name);
-    await avatarImage.mv(localPath);
 
-    // Upload the image to Cloudinary
-    const myCloud = await cloudinary.v2.uploader.upload(localPath, {
+    // Convert base64 image to file
+    const avatarPath = base64Img.imgSync(
+      avatar,
+      `${currentDirectory}/avatars`,
+      Date.now()
+    );
+
+    const myCloud = await cloudinary.v2.uploader.upload(avatarPath, {
       folder: "avatars",
       width: 150,
       crop: "scale",
     });
-    // console.log(myCloud, "...data");
-    // Delete the temporary file
-    await fs.promises.unlink(localPath);
+    fs.unlinkSync(avatarPath);
     let user = await User.findOne({ email });
 
     if (user) return next(new ErrorHandler("User Already Exists", 400));
@@ -139,7 +134,6 @@ export const resetPassword = async (req, res, next) => {
 };
 
 export const logout = (req, res, next) => {
-  // console.log("log -- out");
   try {
     res
       .status(200)

@@ -5,10 +5,10 @@ import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MailOutline, LockOpen, Face } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { login, clearErrors } from "../../actions/userAction";
+import { login, register, clearErrors } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 
-const LoginSignUp = ({ history }) => {
+const LoginSignUp = () => {
   const loginTab = useRef(null); // document.querySelector(".LoginForm")
   const registerTab = useRef(null);
   const switcherTab = useRef(null);
@@ -38,12 +38,14 @@ const LoginSignUp = ({ history }) => {
 
   const registerSubmit = (e) => {
     e.preventDefault();
-    const myForm = new FormData();
-    myForm.set("name", name);
-    myForm.set("email", email);
-    myForm.set("password", password);
-    myForm.set("avatar", avatar);
-    // console.log("Register ...");
+    const myForm = {
+      name,
+      email,
+      password,
+      avatar,
+    };
+    // console.log(user, avatar, " --- myform");
+    dispatch(register(myForm));
   };
 
   const registerDataChange = (e) => {
