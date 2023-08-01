@@ -57,7 +57,7 @@ export const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      return next(new ErrorHandler("Invalid Username or Password", 400));
+      return next(new ErrorHandler("User not found ", 400));
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -188,29 +188,32 @@ export const updatePassword = async (req, res, next) => {
 //update Profile
 export const updateProfile = async (req, res, next) => {
   try {
+    const { email, name, avatar } = req.body;
     const newUserData = {
-      email: req.body.email,
-      name: req.body.name,
+      name,
+      email,
     };
-    if (req.body.avatar !== "") {
+    if (avatar) {
       const user = await User.findById(req.user._id);
       const imageId = user.avatar.public_id;
       await cloudinary.v2.uploader.destroy(imageId);
-      const avatarImage = req.files.avatar; // Access the uploaded image file
 
-      // Save the image locally
       const currentFilePath = fileURLToPath(import.meta.url);
       const currentDirectory = dirname(currentFilePath);
-      const localDirectory = path.join(currentDirectory, "../static/img");
-      const localPath = path.join(localDirectory, avatarImage.name);
-      await avatarImage.mv(localPath);
 
-      // Upload the image to Cloudinary
-      const myCloud = await cloudinary.v2.uploader.upload(localPath, {
+      // Convert base64 image to file
+      const avatarPath = base64Img.imgSync(
+        avatar,
+        `${currentDirectory}/avatars`,
+        Date.now()
+      );
+
+      const myCloud = await cloudinary.v2.uploader.upload(avatarPath, {
         folder: "avatars",
         width: 150,
         crop: "scale",
       });
+      fs.unlinkSync(avatarPath);
       newUserData.avatar = {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
@@ -222,6 +225,7 @@ export const updateProfile = async (req, res, next) => {
       useFindAndModify: false,
     });
     res.status(200).json({
+      user,
       success: true,
     });
   } catch (error) {

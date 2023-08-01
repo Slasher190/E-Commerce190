@@ -13,6 +13,9 @@ RUN npm install
 # Copy the entire project to the working directory
 COPY . .
 
+# Excluding unnecessary files and directories during copying
+COPY .dockerignore ./
+
 # Expose the port where the app will run
 EXPOSE 5000
 

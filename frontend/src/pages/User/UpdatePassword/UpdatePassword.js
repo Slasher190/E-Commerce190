@@ -1,0 +1,104 @@
+import React, { Fragment, useEffect, useState } from "react";
+import "./UpdatePassword.css";
+import Loader from "../../../components/Loader";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePassword, clearErrors } from "../../../actions/userAction";
+import { LockOpen, VpnKey, Lock } from "@material-ui/icons";
+import { useAlert } from "react-alert";
+import { UPDATE_PASSWORD_RESET } from "../../../constants/userConstants";
+import MetaData from "../../../components/MetaData";
+
+const UpdatePassword = () => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  const { error, isUpdated, loading } = useSelector((state) => state.profile);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+
+  const updatePasswordSubmit = (e) => {
+    e.preventDefault();
+    const myForm = {
+      oldPassword,
+      newPassword,
+    };
+    dispatch(updatePassword(myForm));
+  };
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    if (isUpdated) {
+      alert.success("Profile Updated Successfully");
+      navigate("/account");
+      dispatch({
+        type: UPDATE_PASSWORD_RESET,
+      });
+    }
+  }, [dispatch, error, alert, isUpdated, navigate]);
+
+  return (
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Fragment>
+          <MetaData title="Update Password" />
+          <div className="updatePasswordContainer">
+            <div className="updatePasswordBox">
+              <h2 className="updatePasswordHeading">Update Profile</h2>
+
+              <form
+                className="updatePasswordForm"
+                encType="multipart/form-data"
+                onSubmit={updatePasswordSubmit}
+              >
+                <div className="loginPassword">
+                  <VpnKey />
+                  <input
+                    type="password"
+                    placeholder="Old Password"
+                    required
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                  />
+                </div>
+                <div className="loginPassword">
+                  <LockOpen />
+                  <input
+                    type="password"
+                    placeholder="New Password"
+                    required
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                </div>
+                <div className="loginPassword">
+                  <Lock />
+                  <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
+                <input
+                  type="submit"
+                  value="Update"
+                  className="updatePasswordBtn"
+                />
+              </form>
+            </div>
+          </div>
+        </Fragment>
+      )}
+    </Fragment>
+  );
+};
+
+export default UpdatePassword;
