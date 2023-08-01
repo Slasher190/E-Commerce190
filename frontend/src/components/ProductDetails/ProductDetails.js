@@ -9,6 +9,7 @@ import MetaData from "../MetaData/MetaData";
 import ReactStar from "react-rating-stars-component";
 import { useAlert } from "react-alert";
 import ReviewCard from "../ReviewCard";
+import { addItemsToCart } from "../../actions/cartAction";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ const ProductDetails = () => {
   };
 
   const addToCartHandler = () => {
-    // dispatch(addItemsToCart(id, quantity));
+    dispatch(addItemsToCart(id, quantity));
     alert.success("Item Added To Cart");
   };
   return (

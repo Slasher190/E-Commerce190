@@ -80,7 +80,7 @@
 .detailsBlock-3-1-1 > input {
   border: none;
   padding: 0.5vmax;
-  width: 1vmax;
+  width: 1.5vmax;
   text-align: center;
   outline: none;
   font: 400 0.8vmax "Roboto";
@@ -112,10 +112,10 @@
   font: 400 1vmax "Roboto";
   margin: 1vmax 0;
 }
-.redColor{
+.redColor {
   color: rgb(240, 7, 7);
 }
-.greenColor{
+.greenColor {
   color: rgb(10, 155, 10);
 }
 .detailsBlock-4 {
@@ -202,7 +202,6 @@
   color: rgba(0, 0, 0, 0.548);
 }
 
-
 @media screen and (max-width: 600px) {
   .ProductDetails {
     flex-direction: column;
@@ -249,7 +248,7 @@
 
   .detailsBlock-3-1-1 > input {
     padding: 1.5vmax;
-    width: 3vmax;
+    width: 3.5vmax;
     font: 400 1.8vmax "Roboto";
   }
 

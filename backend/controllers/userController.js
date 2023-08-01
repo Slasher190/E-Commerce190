@@ -5,7 +5,6 @@ import crypto from "crypto";
 import { sendCookie } from "../utils/features.js";
 import cloudinary from "cloudinary";
 import fs from "fs";
-import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { generateResetPasswordToken } from "../utils/features.js";
@@ -100,7 +99,6 @@ export const forgotPassword = async (req, res, next) => {
 
 //reset Password
 export const resetPassword = async (req, res, next) => {
-  console.log(req.body, "_____ ", req.params.token)
   try {
     const resetPasswordToken = crypto
       .createHash("sha256")
