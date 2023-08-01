@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import { Pagination, Slider } from "@mui/material";
 import Typography from "@material-ui/core/Typography";
 import { useAlert } from "react-alert";
-import MetaData from "../../components/MetaData";
+import MetaData from "../../components/MetaData/MetaData";
 
 const Products = () => {
   const dispatch = useDispatch();

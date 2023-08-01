@@ -71,29 +71,27 @@ export const loginUser = async (req, res, next) => {
 
 // Forgot Password
 export const forgotPassword = async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    return next(new ErrorHandler("User Not Found", 404));
-  }
-  // Get resetPassword Token
-  const resetToken = generateResetPasswordToken(user);
-  await user.save({ validateBeforeSave: false });
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/password/reset/${resetToken}`;
-  const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
-  // console.log(resetToken, " ... token");
   try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return next(new ErrorHandler("User Not Found", 404));
+    }
+    // Get resetPassword Token
+    const resetToken = generateResetPasswordToken(user);
+    await user.save({ validateBeforeSave: false });
+    const resetPasswordUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/password/reset/${resetToken}`;
+    const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
     res.json({
       success: true,
       user,
-      resetPasswordUrl,
-      message,
+      resetPasswordUrl, //sent to mail not in here
+      message: `Email sent to ${user.email} successfully`,
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
-
     await user.save({ validateBeforeSave: false });
 
     return next(new ErrorHander(error.message, 500));
@@ -102,6 +100,7 @@ export const forgotPassword = async (req, res, next) => {
 
 //reset Password
 export const resetPassword = async (req, res, next) => {
+  console.log(req.body, "_____ ", req.params.token)
   try {
     const resetPasswordToken = crypto
       .createHash("sha256")
@@ -123,10 +122,11 @@ export const resetPassword = async (req, res, next) => {
     if (req.body.newPassword !== req.body.confirmPassword) {
       return next(new ErrorHandler("Password does not match", 400));
     }
-    user.password = req.body.password;
+    const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+    user.password = hashedPassword;
     user.resetPasswordExpire = undefined;
     user.resetPasswordToken = undefined;
-    await user.save;
+    await user.save();
     sendCookie(user, res, `Your Password Reset Successful`, 200);
   } catch (error) {
     next(error);

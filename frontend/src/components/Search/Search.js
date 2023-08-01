@@ -1,14 +1,14 @@
 import React, { Fragment, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Search.css";
-import MetaData from "../MetaData";
+import MetaData from "../MetaData/MetaData";
 
 const Search = () => {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const [filter, setFilter] = useState("");
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  // const [page, setPage] = useState("");
+  // const [perPage, setPerPage] = useState("");
 
   const searchSubmitHandler = useCallback(
     (e) => {
@@ -24,13 +24,13 @@ const Search = () => {
         queryParams.set("filter", filter);
       }
 
-      if (page !== 1) {
-        queryParams.set("page", page);
-      }
+      // if (page !== 1) {
+      //   queryParams.set("page", page);
+      // }
 
-      if (perPage !== 10) {
-        queryParams.set("perPage", perPage);
-      }
+      // if (perPage !== 10) {
+      //   queryParams.set("perPage", perPage);
+      // }
 
       const queryString = queryParams.toString();
       const url = queryString ? `/products?${queryString}` : "/products";
@@ -38,7 +38,13 @@ const Search = () => {
 
       navigate(url);
     },
-    [keyword, filter, page, perPage, navigate]
+    [
+      keyword,
+      filter,
+      //  page,
+      //  perPage,
+      navigate,
+    ]
   );
 
   return (
@@ -51,20 +57,20 @@ const Search = () => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
-        {/* <input
+        <input
           type="text"
           placeholder="Filter ..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
-        <input
-          type="number"
+        {/* <input
+          type="text"
           placeholder="Page ..."
           value={page}
           onChange={(e) => setPage(Number(e.target.value))}
         />
         <input
-          type="number"
+          type="text"
           placeholder="Per Page ..."
           value={perPage}
           onChange={(e) => setPerPage(Number(e.target.value))}

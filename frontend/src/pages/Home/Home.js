@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useRef } from "react";
 import { CgMouse } from "@react-icons/all-files/cg/CgMouse";
 import "./Home.css";
 import Product from "../../components/ProductCard";
-import MetaData from "../../components/MetaData";
+import MetaData from "../../components/MetaData/MetaData";
 import { getProduct } from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../components/Loader";

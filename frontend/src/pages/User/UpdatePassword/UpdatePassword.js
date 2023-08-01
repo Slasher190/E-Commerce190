@@ -7,7 +7,7 @@ import { updatePassword, clearErrors } from "../../../actions/userAction";
 import { LockOpen, VpnKey, Lock } from "@material-ui/icons";
 import { useAlert } from "react-alert";
 import { UPDATE_PASSWORD_RESET } from "../../../constants/userConstants";
-import MetaData from "../../../components/MetaData";
+import MetaData from "../../../components/MetaData/MetaData";
 
 const UpdatePassword = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const UpdatePassword = () => {
     };
     dispatch(updatePassword(myForm));
   };
-
+  
   useEffect(() => {
     if (error) {
       alert.error(error);

@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "./UpdateProfile.css";
 import Loader from "../../../components/Loader";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import {
 } from "../../../actions/userAction";
 import { useAlert } from "react-alert";
 import { UPDATE_PROFILE_RESET } from "../../../constants/userConstants";
-import MetaData from "../../../components/MetaData";
+import MetaData from "../../../components/MetaData/MetaData";
 
 const UpdateProfile = () => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const UpdateProfile = () => {
     };
     reader.readAsDataURL(e.target?.files[0]);
   };
-  
+
   useEffect(() => {
     if (user) {
       setName(user.name);
