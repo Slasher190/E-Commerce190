@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import "./ShippingInfo.css";
-import { UseSelector, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { saveShippingInfo } from "../../../actions/cartAction";
 import MetaData from "../../MetaData";
 import PinDropIcon from "@material-ui/icons/PinDrop";

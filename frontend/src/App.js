@@ -22,6 +22,7 @@ import ForgotPassword from "./pages/User/ForgotPassword";
 import ResetPassword from "./pages/User/ResetPassword";
 import Cart from "./components/Cart";
 import ShippingInfo from "./components/Cart/ShippingInfo";
+import ConfirmOrder from "./components/Cart/ConfirmOrder";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -80,9 +81,19 @@ function App() {
           element={<ResetPassword />}
         />
         <Route exact path="/cart" name="Cart" element={<Cart />} />
-        <Route exact path="/shipping" name="Shipping Info" element={<ShippingInfo />} />
+        <Route
+          exact
+          path="/shipping"
+          name="Shipping Info"
+          element={<ShippingInfo />}
+        />
+        <Route
+          exact
+          path="/order/confirm"
+          name="Confirm Order"
+          element={<ConfirmOrder />}
+        />
         <Route exact path="/sad" name="Loader" element={<Loader />} />
-
       </Routes>
       <Footer />
     </BrowserRouter>
