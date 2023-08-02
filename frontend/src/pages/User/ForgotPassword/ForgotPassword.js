@@ -1,9 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "./ForgotPassword.css";
 import Loader from "../../../components/Loader";
-import { useNavigate } from "react-router-dom";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, forgotPassword } from "../../../actions/userAction";
 import { useAlert } from "react-alert";
