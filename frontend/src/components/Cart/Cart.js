@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItemsToCart, removeItemsFromCart } from "../../actions/cartAction";
 import { Typography } from "@mui/material";
 import RemoveShoppingCartItemIcon from "@material-ui/icons/RemoveShoppingCart";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 const Cart = () => {
   // const item = {
   //   product: "productID",
@@ -16,6 +16,8 @@ const Cart = () => {
   //     "https://images.unsplash.com/photo-1690705556114-539a7d57f2d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
   // };
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { cartItems } = useSelector((state) => state.cart);
   const increaseQuantity = (id, quantity, stock) => {
     const newQty = quantity + 1;
@@ -33,6 +35,10 @@ const Cart = () => {
   };
   const deleteCartItems = (id) => {
     dispatch(removeItemsFromCart(id));
+  };
+  const checkoutHandler = () => {
+    const redirect = location.search ? location.search.split("=")[1] : "/shipping";
+    navigate(`/login?redirect=${redirect}`);
   };
   return (
     <Fragment>
@@ -91,7 +97,7 @@ const Cart = () => {
               </div>
               <div></div>
               <div className="checkOutBtn">
-                <button>Check Out</button>
+                <button onClick={checkoutHandler}>Check Out</button>
               </div>
             </div>
           </div>

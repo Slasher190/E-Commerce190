@@ -21,6 +21,7 @@ import UpdatePassword from "./pages/User/UpdatePassword";
 import ForgotPassword from "./pages/User/ForgotPassword";
 import ResetPassword from "./pages/User/ResetPassword";
 import Cart from "./components/Cart";
+import ShippingInfo from "./components/Cart/ShippingInfo";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -79,7 +80,9 @@ function App() {
           element={<ResetPassword />}
         />
         <Route exact path="/cart" name="Cart" element={<Cart />} />
+        <Route exact path="/shipping" name="Shipping Info" element={<ShippingInfo />} />
         <Route exact path="/sad" name="Loader" element={<Loader />} />
+
       </Routes>
       <Footer />
     </BrowserRouter>

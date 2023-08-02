@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import "./LoginSignUp.css";
 import Loader from "../../../components/Loader";
 import { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MailOutline, LockOpen, Face } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register, clearErrors } from "../../../actions/userAction";
@@ -15,7 +15,7 @@ const LoginSignUp = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
@@ -48,6 +48,8 @@ const LoginSignUp = () => {
     dispatch(register(myForm));
   };
 
+  const redirect = location.search ? location.search.split("=")[1] : "/account";
+
   const registerDataChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();
@@ -69,7 +71,7 @@ const LoginSignUp = () => {
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
-      navigate("/account");
+      navigate(redirect);
     }
   }, [dispatch, error, alert, isAuthenticated, navigate]);
 
