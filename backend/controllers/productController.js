@@ -242,8 +242,9 @@ export const createProductReview = async (req, res, next) => {
     const isReviewed = product.reviews.find(
       (rev) => rev.user.toString() === req.user._id.toString()
     );
+
     if (isReviewed) {
-      // update
+      // Update existing review
       product.reviews.forEach((rev) => {
         if (rev.user.toString() === req.user._id.toString()) {
           rev.rating = rating;
@@ -251,17 +252,22 @@ export const createProductReview = async (req, res, next) => {
         }
       });
     } else {
-      // created new one
+      // Create new review
       product.reviews.push(review);
-      product.numOfReviews = product.reviews.length;
     }
-    let avg = 0;
-    product.reviews.forEach((rev) => {
-      avg += rev.rating;
-    });
-    product.ratings = avg / product.reviews.length;
 
-    await product.save({ validateBeforeSave: false });
+    // Calculate average rating
+    let totalRatings = 0;
+    product.reviews.forEach((rev) => {
+      totalRatings += rev.rating;
+    });
+    product.rating = totalRatings / product.reviews.length;
+
+    // Update the number of reviews
+    product.numOfReviews = product.reviews.length;
+
+    // Save the product
+    await product.save();
 
     res.status(200).json({
       success: true,
@@ -270,6 +276,7 @@ export const createProductReview = async (req, res, next) => {
     return next(error);
   }
 };
+
 
 export const getProductReviews = async (req, res, next) => {
   try {

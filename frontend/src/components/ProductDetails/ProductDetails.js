@@ -2,7 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
-import { clearErrors, getProductDetail } from "../../actions/productAction";
+import {
+  clearErrors,
+  getProductDetail,
+  newReview,
+} from "../../actions/productAction";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 import MetaData from "../MetaData/MetaData";
@@ -10,30 +14,54 @@ import ReactStar from "react-rating-stars-component";
 import { useAlert } from "react-alert";
 import ReviewCard from "../ReviewCard";
 import { addItemsToCart } from "../../actions/cartAction";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Rating,
+} from "@mui/material";
+import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
   const { id } = useParams();
   const { product, loading, error } = useSelector(
     (state) => state.productDetail
   );
+  const { success, error: reviewError } = useSelector(
+    (state) => state.newReview
+  );
+
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
+    if (reviewError) {
+      alert.error(reviewError);
+      dispatch(clearErrors());
+    }
+    if (success) {
+      alert.success("Review Submitted Successfully");
+      dispatch({
+        type: NEW_REVIEW_RESET,
+      });
+    }
     dispatch(getProductDetail(id));
-  }, [dispatch, id, error, alert]);
+  }, [dispatch, id, error, alert, success, reviewError, rating]);
+
   const options = {
-    edit: false,
-    color: "rgba(20,20,20,0.1)",
-    activeColor: "tomato",
     value: product?.rating,
-    size: window.innerWidth < 600 ? 20 : 25,
-    isHalf: true,
+    size: "large",
+    readOnly: true,
+    precision: 0.5,
   };
 
   const increaseQuantity = () => {
@@ -57,6 +85,11 @@ const ProductDetails = () => {
   const addToCartHandler = () => {
     dispatch(addItemsToCart(id, quantity));
     alert.success("Item Added To Cart");
+  };
+
+  const reviewSubmitHandler = () => {
+    dispatch(newReview({ rating, comment, productId: id }));
+    setOpen(false);
   };
   return (
     <Fragment>
@@ -86,7 +119,7 @@ const ProductDetails = () => {
                 <p>Product # {product._id}</p>
               </div>
               <div className="detailsBlock-2">
-                <ReactStar {...options} />
+                <Rating {...options} />
                 <span className="detailsBlock-2-span">
                   {" "}
                   ({product.numOfReviews} Reviews)
@@ -128,7 +161,7 @@ const ProductDetails = () => {
 
           <h3 className="reviewsHeading">REVIEWS</h3>
 
-          {/* <Dialog
+          <Dialog
             aria-labelledby="simple-dialog-title"
             open={open}
             onClose={submitReviewToggle}
@@ -157,7 +190,7 @@ const ProductDetails = () => {
                 Submit
               </Button>
             </DialogActions>
-          </Dialog> */}
+          </Dialog>
 
           {product.reviews && product.reviews[0] ? (
             <div className="reviews">
