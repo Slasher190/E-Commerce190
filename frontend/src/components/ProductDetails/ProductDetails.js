@@ -10,7 +10,6 @@ import {
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 import MetaData from "../MetaData/MetaData";
-import ReactStar from "react-rating-stars-component";
 import { useAlert } from "react-alert";
 import ReviewCard from "../ReviewCard";
 import { addItemsToCart } from "../../actions/cartAction";

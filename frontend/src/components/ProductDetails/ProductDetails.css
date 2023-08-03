@@ -15,7 +15,7 @@
   align-items: center;
   padding: 2vmax;
   box-sizing: border-box;
-  /* border: 1px solid black; */
+  border: 1px solid white;
 }
 
 .ProductDetails > div:last-child {
@@ -80,7 +80,7 @@
 .detailsBlock-3-1-1 > input {
   border: none;
   padding: 0.5vmax;
-  width: 1.5vmax;
+  width: 1vmax;
   text-align: center;
   outline: none;
   font: 400 0.8vmax "Roboto";
@@ -112,12 +112,7 @@
   font: 400 1vmax "Roboto";
   margin: 1vmax 0;
 }
-.redColor {
-  color: rgb(240, 7, 7);
-}
-.greenColor {
-  color: rgb(10, 155, 10);
-}
+
 .detailsBlock-4 {
   color: rgba(0, 0, 0, 0.897);
   font: 500 1.2vmax sans-serif;
@@ -248,7 +243,7 @@
 
   .detailsBlock-3-1-1 > input {
     padding: 1.5vmax;
-    width: 3.5vmax;
+    width: 3vmax;
     font: 400 1.8vmax "Roboto";
   }
 

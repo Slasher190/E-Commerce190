@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
-import ReactStar from "react-rating-stars-component";
+import { Rating } from "@mui/material";
 import "./Product.css";
 
 export default function Product({ product }) {
   const options = {
-    edit: false,
-    color: "rgba(20,20,20,0.1)",
-    activeColor: "tomato",
     value: product?.rating,
-    size: window.innerWidth < 600 ? 20 : 25,
-    isHalf: true,
+    size: "large",
+    readOnly: true,
+    precision: 0.5,
   };
 
   return (
@@ -17,7 +15,7 @@ export default function Product({ product }) {
       <img src={product?.images[0].url} alt={product?.name} />
       <p>{product?.name}</p>
       <div>
-        <ReactStar {...options} />
+        <Rating {...options} />
         <span>({product?.numOfReviews} Reviews)</span>
       </div>
       <span>{`₹${product?.price}`}</span>
