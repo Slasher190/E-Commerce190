@@ -33,7 +33,6 @@ const LoginSignUp = () => {
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginEmail, loginPassword));
-    // console.log("Login Form Submitted ...");
   };
 
   const registerSubmit = (e) => {
@@ -44,7 +43,6 @@ const LoginSignUp = () => {
       password,
       avatar,
     };
-    // console.log(user, avatar, " --- myform");
     dispatch(register(myForm));
   };
 

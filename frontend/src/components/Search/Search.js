@@ -34,7 +34,6 @@ const Search = () => {
 
       const queryString = queryParams.toString();
       const url = queryString ? `/products?${queryString}` : "/products";
-      console.log(url, "hello world Infinte Wrold");
 
       navigate(url);
     },

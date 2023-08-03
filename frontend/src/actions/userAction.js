@@ -50,7 +50,6 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const register = (userData) => async (dispatch) => {
-  console.log(userData, " --- data");
   try {
     dispatch({ type: REGISTER_USER_REQUEST });
     const config = {
@@ -64,7 +63,6 @@ export const register = (userData) => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
-    // console.log(error, " --- error")
     dispatch({
       type: REGISTER_USER_FAIL,
       payload: error.response.data.message,
@@ -108,7 +106,6 @@ export const clearErrors = () => async (dispatch) => {
 
 //updateProfile
 export const updateProfile = (userData) => async (dispatch) => {
-  console.log(userData, " --- data");
   try {
     dispatch({ type: UPDATE_PROFILE_REQUEST });
     const config = {
@@ -122,7 +119,6 @@ export const updateProfile = (userData) => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
-    // console.log(error, " --- error")
     dispatch({
       type: UPDATE_PROFILE_FAIL,
       payload: error.response.data.message,
@@ -132,7 +128,6 @@ export const updateProfile = (userData) => async (dispatch) => {
 
 //updatePassword
 export const updatePassword = (passwords) => async (dispatch) => {
-  console.log(passwords, " --- data");
   try {
     dispatch({ type: UPDATE_PASSWORD_REQUEST });
     const config = {
@@ -150,7 +145,6 @@ export const updatePassword = (passwords) => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
-    // console.log(error, " --- error")
     dispatch({
       type: UPDATE_PASSWORD_FAIL,
       payload: error.response.data.message,
@@ -160,7 +154,6 @@ export const updatePassword = (passwords) => async (dispatch) => {
 
 // forgotPassword
 export const forgotPassword = (email) => async (dispatch) => {
-  // console.log(email);
   try {
     dispatch({ type: FORGOT_PASSWORD_REQUEST });
 
@@ -169,9 +162,7 @@ export const forgotPassword = (email) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    // console.log(email);
     const { data } = await axios.post("/api/v1/password/forgot", email, config);
-    console.log(data, " ----------Data ");
     dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({
@@ -183,7 +174,6 @@ export const forgotPassword = (email) => async (dispatch) => {
 
 // resetPassword
 export const resetPassword = (token, password) => async (dispatch) => {
-  // console.log(email);
   try {
     dispatch({ type: RESET_PASSWORD_REQUEST });
 
@@ -192,8 +182,12 @@ export const resetPassword = (token, password) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    // console.log(email);
-    const { data } = await axios.put(`/api/v1/password/reset/${token}`, password, config);
+
+    const { data } = await axios.put(
+      `/api/v1/password/reset/${token}`,
+      password,
+      config
+    );
     dispatch({ type: RESET_PASSWORD_SUCCESS, payload: data.success });
   } catch (error) {
     dispatch({

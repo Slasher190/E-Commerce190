@@ -27,7 +27,8 @@ import axios from "axios";
 import Payment from "./components/Cart/Payment";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import OrderSuccess from "./components/Cart/Success";
+import OrderSuccess from "./components/Cart/Order/OrderSuccess";
+import OrderDetails from "./components/Cart/Order/OrderDetails";
 import MyOrders from "./components/Orders";
 
 function App() {
@@ -123,6 +124,12 @@ function App() {
           element={<OrderSuccess />}
         />
         <Route exact path="/orders" name="My Orders" element={<MyOrders />} />
+        <Route
+          exact
+          path="/order/:id"
+          name="Order Details"
+          element={<OrderDetails />}
+        />
         <Route exact path="/sad" name="Loader" element={<Loader />} />
       </Routes>
       <Footer />

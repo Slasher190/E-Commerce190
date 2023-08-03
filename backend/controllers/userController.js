@@ -234,7 +234,6 @@ export const updateProfile = async (req, res, next) => {
 //Admin Panel - get all users
 export const getAllUser = async (req, res, next) => {
   try {
-    // console.log(req.query)
     ///api/v1/admin/users?page=1&limit=10
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -263,7 +262,6 @@ export const getAllUser = async (req, res, next) => {
 //Admin -get Single User or UserDetail
 export const getSingleUser = async (req, res, next) => {
   try {
-    console.log(req.params.id, "...hello");
     const user = await User.findById(req.params.id);
     if (!user) {
       return next(

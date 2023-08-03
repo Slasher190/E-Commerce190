@@ -15,7 +15,7 @@ const ForgotPassword = () => {
   const { error, message, loading } = useSelector(
     (state) => state.forgotPassword
   );
-  const data = useSelector((state) => state.forgotPassword);
+  // const data = useSelector((state) => state.forgotPassword);
   const [email, setEmail] = useState("");
 
   const forgotPasswordSubmit = (e) => {
@@ -35,7 +35,6 @@ const ForgotPassword = () => {
       alert.success(message);
     }
   }, [dispatch, error, alert, message]);
-  console.log(data, message, " ----- ");
   return (
     <Fragment>
       {loading ? (
