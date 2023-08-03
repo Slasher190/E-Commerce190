@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../Sidebar";
 import "./dashboard.css";
 import { Typography } from "@mui/material";
@@ -12,8 +12,11 @@ import {
   LinearScale,
   LineElement,
   PointElement,
-  ArcElement
+  ArcElement,
 } from "chart.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getAdminProducts } from "../../../actions/productAction";
+import { useAlert } from "react-alert";
 ChartJS.register(
   CategoryScale,
   Tooltip,
@@ -26,6 +29,21 @@ ChartJS.register(
 ChartJS.defaults.plugins.legend.position = "bottom";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  const { products } = useSelector((state) => state.products);
+
+  useEffect(() => {
+    dispatch(getAdminProducts());
+  }, [dispatch]);
+
+  let outOfStock = 0;
+  products &&
+    products.forEach((product) => {
+      if (product.stock === 0) {
+        outOfStock += 1;
+      }
+    });
   const lineState = {
     labels: ["Initial Amount", "Amount Earned"],
     datasets: [
@@ -44,7 +62,7 @@ const Dashboard = () => {
       {
         backgroundColor: ["#00A68A", "#680084"],
         hoverBackgroundColor: ["#4B5000", "#35014f"],
-        data: [2, 10],
+        data: [outOfStock, products.length - outOfStock],
       },
     ],
   };
@@ -62,7 +80,7 @@ const Dashboard = () => {
           <div className="dashboardSummaryBox2">
             <Link to="/admin/products">
               <p>Product</p>
-              <p>50</p>
+              <p>{products && products.length}</p>
             </Link>
             <Link to="/admin/orders">
               <p>Orders</p>
@@ -78,7 +96,7 @@ const Dashboard = () => {
           <Line datasetIdKey="id" data={lineState} />
         </div>
         <div className="doughnutChart">
-          <Doughnut data={doughnutState}  />
+          <Doughnut data={doughnutState} />
         </div>
       </div>
     </div>
