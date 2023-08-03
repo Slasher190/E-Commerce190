@@ -6,6 +6,9 @@ export const processPayment = async (req, res, next) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.amount,
       currency: "inr",
+      metadata: {
+        company: "E-com",
+      },
       automatic_payment_methods: { enabled: true },
     });
 
@@ -20,7 +23,6 @@ export const processPayment = async (req, res, next) => {
 
 export const sendStripeApiKey = async (req, res, next) => {
   try {
-    console.log("hello");
     res.status(200).json({
       stripeApiKey: process.env.STRIPE_API_KEY,
     });

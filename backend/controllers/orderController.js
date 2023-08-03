@@ -3,6 +3,7 @@ import ErrorHandler from "../middleware/error.js";
 import { Order } from "../models/orderModel.js";
 
 export const newOrder = async (req, res, next) => {
+  console.log(req.user._id, " ----- id")
   try {
     const {
       shippingInfo,
@@ -55,7 +56,12 @@ export const getSingleOrder = async (req, res, next) => {
 
 export const myOrders = async (req, res, next) => {
   try {
+    const id = "64aac47c0d53bc10bfe580b8";
+    // 646499a682db8cff2a2576a1
+    // 64aac47c0d53bc10bfe580b8
+    // 64aac47c0d53bc10bfe580b8
     const orders = await Order.find({ user: req.user._id });
+    console.log("hello ....", req.user._id, orders);
     res.status(200).json({
       success: true,
       orders,

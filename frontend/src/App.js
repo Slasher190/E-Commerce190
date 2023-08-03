@@ -28,6 +28,7 @@ import Payment from "./components/Cart/Payment";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from "./components/Cart/Success";
+import MyOrders from "./components/Orders";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -121,6 +122,7 @@ function App() {
           name="Success"
           element={<OrderSuccess />}
         />
+        <Route exact path="/orders" name="My Orders" element={<MyOrders />} />
         <Route exact path="/sad" name="Loader" element={<Loader />} />
       </Routes>
       <Footer />
