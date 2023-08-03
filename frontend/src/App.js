@@ -142,7 +142,7 @@ function App() {
         />
         <Route
           exact
-          path="/admin/producs"
+          path="/admin/products"
           name="All Products"
           element={<ProductList />}
         />
