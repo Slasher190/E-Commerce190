@@ -30,6 +30,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from "./components/Cart/Order/OrderSuccess";
 import OrderDetails from "./components/Cart/Order/OrderDetails";
 import MyOrders from "./components/Orders";
+import Dashboard from "./pages/admin/Dashboard";
+import ProductList from "./pages/admin/Products";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -131,6 +133,19 @@ function App() {
           element={<OrderDetails />}
         />
         <Route exact path="/sad" name="Loader" element={<Loader />} />
+
+        <Route
+          exact
+          path="/admin/dashboard"
+          name="Admin Dashboard"
+          element={<Dashboard />}
+        />
+        <Route
+          exact
+          path="/admin/producs"
+          name="All Products"
+          element={<ProductList />}
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -63,7 +63,7 @@ const UserOptions = ({ user }) => {
     alert.success("Logout Successfully");
   }
   function dashboard() {
-    navigate("/dashboard");
+    navigate("/admin/dashboard");
   }
   return (
     <Fragment>
