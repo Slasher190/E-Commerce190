@@ -14,6 +14,7 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 import bodyParser from "body-parser";
 import fakeRoute from "./routes/fakeRoute.js";
+import { connectDB } from "./data/database.js";
 export const app = express();
 
 const swaggerDocument = YAML.load("./swagger.yaml");
@@ -46,3 +47,5 @@ app.use("/api/v1", fakeRoute);
 
 //Using Error Middileware
 app.use(errorMiddleware);
+
+connectDB();
