@@ -13,22 +13,27 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import bodyParser from "body-parser";
-import fakeRoute from "./routes/fakeRoute.js"
+import fakeRoute from "./routes/fakeRoute.js";
 export const app = express();
-
 
 const swaggerDocument = YAML.load("./swagger.yaml");
 config({
   path: "./data/config.env",
 });
-//Using Middleware  
+//Using Middleware
 app.use(fileUpload());
 app.use(logRequests);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://deploy-mern-1whq.vercel.app"],
+    methods: ["POST", "GET", "PUT"],
+    credentials: true,
+  })
+);
 //swaggerUI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
