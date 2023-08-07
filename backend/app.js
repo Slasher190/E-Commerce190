@@ -8,7 +8,7 @@ import { errorMiddleware } from "./middleware/error.js";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import morgan from "morgan";
-import { logRequests } from "./middleware/logreqs.js";
+// import { logRequests } from "./middleware/logreqs.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
@@ -22,7 +22,7 @@ config({
 });
 //Using Middleware
 app.use(fileUpload());
-app.use(logRequests);
+// app.use(logRequests);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));

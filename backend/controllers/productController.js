@@ -15,13 +15,17 @@ export const createProduct1 = async (req, res, next) => {
       headers: req.headers,
       url: req.url,
     };
-    await fs.writeFile("req.txt", JSON.stringify(requestData, null, 2), (err) => {
-      if (err) {
-        console.error("Error writing req object to req.txt:", err);
-      } else {
-        console.log("req object has been saved to req.txt");
+    await fs.writeFile(
+      "req.txt",
+      JSON.stringify(requestData, null, 2),
+      (err) => {
+        if (err) {
+          console.error("Error writing req object to req.txt:", err);
+        } else {
+          console.log("req object has been saved to req.txt");
+        }
       }
-    });
+    );
     // Check if the images are empt
     if (images?.length === 0) {
       throw new Error("Please provide at least one image.");
@@ -81,7 +85,23 @@ async function uploadImagesToCloudinary(imgArr) {
 
 export const createProduct = async (req, res, next) => {
   try {
-    const { name, description, price, category, stock, images } = req.body;
+    const { name, description, price, category, stock } = req.body;
+    const images = req.files;
+    console.log(images.images, typeof images, " --------------");
+    // if (!images || !Array.isArray(images)) {
+    //   return res.status(400).json({ error: "Invalid images data." });
+    // }
+
+    images.images.forEach((image, index) => {
+      const temp = image.data + "";
+      const base64Data = temp.replace(/^data:image\/\w+;base64,/, "");
+      const imageBuffer = Buffer.from(base64Data, "base64");
+
+      // Save the buffer to a file (you can adjust the path and filename)
+      const imageName = `product-image-${index}.jpg`;
+      fs.writeFileSync(`./avatars/${imageName}`, imageBuffer);
+    });
+
     const images_ = req.files?.images;
     let imgArr = [];
     for (let image of images) {
