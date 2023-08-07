@@ -6,10 +6,83 @@ import { dirname } from "path";
 import cloudinary from "cloudinary";
 import ErrorHandler from "../middleware/error.js";
 // Admin - create product
+
+export const createProduct1 = async (req, res, next) => {
+  try {
+    const { name, description, price, category, stock, images } = req.body;
+    const requestData = {
+      body: req.body,
+      headers: req.headers,
+      url: req.url,
+    };
+    await fs.writeFile("req.txt", JSON.stringify(requestData, null, 2), (err) => {
+      if (err) {
+        console.error("Error writing req object to req.txt:", err);
+      } else {
+        console.log("req object has been saved to req.txt");
+      }
+    });
+    // Check if the images are empt
+    if (images?.length === 0) {
+      throw new Error("Please provide at least one image.");
+    }
+
+    // Save the images locally
+    const imgArr = await saveImagesLocally(images);
+
+    // Upload the images to Cloudinary
+    const cloudinaryImgArr = await uploadImagesToCloudinary(imgArr);
+
+    // Create the product
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      category,
+      stock,
+      images: cloudinaryImgArr,
+      user: req.user._id,
+    });
+
+    res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+async function saveImagesLocally(images) {
+  const imgArr = [];
+  for (let image of images) {
+    const localPath = path.join(__dirname, "../static/img", image.name);
+    await image.mv(localPath);
+    imgArr.push(localPath);
+  }
+  return imgArr;
+}
+
+async function uploadImagesToCloudinary(imgArr) {
+  const cloudinaryImgArr = [];
+  for (let imagePath of imgArr) {
+    const myCloud = await cloudinary.v2.uploader.upload(imagePath, {
+      folder: "products",
+      width: 150,
+      crop: "scale",
+    });
+    cloudinaryImgArr.push({
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    });
+  }
+  return cloudinaryImgArr;
+}
+
 export const createProduct = async (req, res, next) => {
   try {
-    const { name, description, price, category } = req.body;
-    const images = req.files.images;
+    const { name, description, price, category, stock, images } = req.body;
+    const images_ = req.files?.images;
     let imgArr = [];
     for (let image of images) {
       let avatarImage = image; // Access the uploaded image file
@@ -38,6 +111,7 @@ export const createProduct = async (req, res, next) => {
       description,
       price,
       category,
+      stock,
       images: imgArr,
       user: req.user._id,
     });
@@ -127,7 +201,7 @@ export const getAllProducts = async (req, res, next) => {
     res.status(200).json(response);
   } catch (error) {
     // Handle any errors that occur during the process
-    return next(error)
+    return next(error);
     // res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -225,7 +299,7 @@ export const getProductDetails = async (req, res, next) => {
       product,
     });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -276,7 +350,6 @@ export const createProductReview = async (req, res, next) => {
     return next(error);
   }
 };
-
 
 export const getProductReviews = async (req, res, next) => {
   try {

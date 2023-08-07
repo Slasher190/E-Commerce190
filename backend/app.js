@@ -13,7 +13,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import bodyParser from "body-parser";
+import fakeRoute from "./routes/fakeRoute.js"
 export const app = express();
+
 
 const swaggerDocument = YAML.load("./swagger.yaml");
 config({
@@ -35,6 +37,7 @@ app.use("/api/v1", userRouter);
 app.use("/api/v1", userProduct);
 app.use("/api/v1", userOrder);
 app.use("/api/v1", userPayment);
+app.use("/api/v1", fakeRoute);
 
 //Using Error Middileware
 app.use(errorMiddleware);

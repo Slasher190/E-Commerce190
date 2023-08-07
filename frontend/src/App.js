@@ -31,7 +31,8 @@ import OrderSuccess from "./components/Cart/Order/OrderSuccess";
 import OrderDetails from "./components/Cart/Order/OrderDetails";
 import MyOrders from "./components/Orders";
 import Dashboard from "./pages/admin/Dashboard";
-import ProductList from "./pages/admin/Products";
+import ProductList from "./pages/admin/Products/ProductList";
+import NewProduct from "./pages/admin/Products/NewProduct";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -48,7 +49,7 @@ function App() {
         families: ["Roboto", "Droid Sans", "Chilanka"],
       },
     });
-    // getStripeApiKey();
+    getStripeApiKey();
     store.dispatch(loadUser());
   }, [stripeApiKey]);
   return (
@@ -145,6 +146,12 @@ function App() {
           path="/admin/products"
           name="All Products"
           element={<ProductList />}
+        />
+        <Route
+          exact
+          path="/admin/product"
+          name="Create Product"
+          element={<NewProduct />}
         />
       </Routes>
       <Footer />
