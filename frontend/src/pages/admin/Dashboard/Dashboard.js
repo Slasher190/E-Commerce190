@@ -16,7 +16,6 @@ import {
 } from "chart.js";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminProducts } from "../../../actions/productAction";
-import { useAlert } from "react-alert";
 ChartJS.register(
   CategoryScale,
   Tooltip,
@@ -30,7 +29,6 @@ ChartJS.defaults.plugins.legend.position = "bottom";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const alert = useAlert();
   const { products } = useSelector((state) => state.products);
 
   useEffect(() => {
