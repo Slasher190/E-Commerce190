@@ -29,7 +29,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://deploy-mern-1whq.vercel.app"],
+    origin: ["https://main--celebrated-gingersnap-ce2bea.netlify.app"],
     methods: ["POST", "GET", "PUT"],
     credentials: true,
   })
